@@ -3,6 +3,7 @@ import {
   CommentsController,
   FetchAbortedError,
 } from "./controllers/commentsController";
+import { StickyNote } from "./components/StickyNote";
 import type { Comment } from "./types/comment";
 import "./App.css";
 
@@ -43,38 +44,56 @@ function App() {
   }, [fetchComments]);
 
   return (
-    <>
-      <h1>Engineering Xchange Talk</h1>
-      <h2>Wall of Gratitude Comments</h2>
-      <button onClick={() => setShowComments(!showComments)}>
-        {showComments ? "Hide comments" : "Show comments"}
-      </button>
-      <div id="center">
-        {showComments && isLoading && (
-          <p className="comments-status">Loading comments...</p>
-        )}
-        {showComments && !isLoading && error && (
-          <div className="comments-error" role="alert">
-            <p>{error}</p>
-            <button type="button" onClick={() => fetchComments()}>
-              Try again
-            </button>
-          </div>
-        )}
-        {showComments && !isLoading && !error && comments.length === 0 && (
-          <p className="comments-status">No comments yet.</p>
-        )}
-        {showComments &&
-          !isLoading &&
-          !error &&
-          comments.map((comment) => (
-            <div key={comment.id}>
-              <p>{comment.user}</p>
-              <p>{comment.comment}</p>
+    <div className="app">
+      <header className="app-header">
+        <p className="app-eyebrow">Engineering Xchange Talk</p>
+        <h1>Wall of Gratitude</h1>
+        <p className="app-subtitle">
+          Messages of team members on the wall — fetched/intercepted live from
+          the API
+        </p>
+        <button
+          className="toggle-btn"
+          onClick={() => setShowComments(!showComments)}
+        >
+          {showComments ? "Hide sticky notes" : "Show sticky notes"}
+        </button>
+      </header>
+
+      {showComments && (
+        <main className="wall">
+          {isLoading && (
+            <div className="wall-status">
+              <span className="wall-spinner" aria-hidden="true" />
+              <p>Loading comments...</p>
             </div>
-          ))}
-      </div>
-    </>
+          )}
+
+          {!isLoading && error && (
+            <div className="comments-error" role="alert">
+              <p>{error}</p>
+              <button type="button" onClick={() => fetchComments()}>
+                Try again
+              </button>
+            </div>
+          )}
+
+          {!isLoading && !error && comments.length === 0 && (
+            <p className="wall-status">
+              No comments yet. Be the first to share!
+            </p>
+          )}
+
+          {!isLoading && !error && comments.length > 0 && (
+            <div className="sticky-wall">
+              {comments.map((comment, index) => (
+                <StickyNote key={comment.id} comment={comment} index={index} />
+              ))}
+            </div>
+          )}
+        </main>
+      )}
+    </div>
   );
 }
 
