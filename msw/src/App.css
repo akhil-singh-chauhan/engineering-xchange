@@ -56,6 +56,43 @@
   }
 }
 
+.comments-status {
+  color: var(--text);
+  margin: 0;
+}
+
+.comments-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  border: 1px solid #f5c2c7;
+  background: rgba(220, 53, 69, 0.08);
+  max-width: 420px;
+  text-align: center;
+
+  p {
+    margin: 0;
+    color: #b02a37;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid #f5c2c7;
+    background: var(--bg);
+    color: var(--text-h);
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(220, 53, 69, 0.08);
+    }
+  }
+}
+
 #center {
   display: flex;
   flex-direction: column;

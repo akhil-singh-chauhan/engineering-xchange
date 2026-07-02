@@ -3,23 +3,33 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 
+async function disableStaleMockServiceWorker() {
+  if (!("serviceWorker" in navigator)) {
+    return;
+  }
+
+  const registrations = await navigator.serviceWorker.getRegistrations();
+
+  await Promise.all(
+    registrations
+      .filter((registration) =>
+        registration.active?.scriptURL.includes("mockServiceWorker"),
+      )
+      .map((registration) => registration.unregister()),
+  );
+}
+
 async function enableMocking() {
-  // Check the environment variable set by your package.json script
-  // if (import.meta.env.VITE_USE_MSW !== "true") {
-  //   return;
-  // }
-  if (process.env.NODE_ENV !== "development") {
+  if (import.meta.env.VITE_USE_MSW !== "true") {
+    await disableStaleMockServiceWorker();
     return;
   }
 
   const { worker } = await import("./mocks/browser");
 
-  // `worker.start()` returns a Promise that resolves
-  // once the Service Worker is up and ready to intercept requests.
-  return worker.start();
-  // return worker.start({
-  //   onUnhandledRequest: "bypass", // Lets unmocked routes hit the real backend
-  // });
+  return worker.start({
+    onUnhandledRequest: "bypass",
+  });
 }
 
 enableMocking().then(() => {

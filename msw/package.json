@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:mock": "cross-env VITE_USE_MSW=true vite",
+    "dev:mock:error": "cross-env VITE_USE_MSW=true VITE_MSW_SCENARIO=error vite",
     "dev:real": "cross-env VITE_USE_MSW=false vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
