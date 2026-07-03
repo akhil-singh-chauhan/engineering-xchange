@@ -47,7 +47,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <p className="app-eyebrow">Engineering Xchange Talk</p>
-        <h1>Wall of Gratitude</h1>
+        <h2 className="app-title">Mock Service Worker (MSW)</h2>
         <p className="app-subtitle">
           Messages of team members on the wall — fetched/intercepted live from
           the API
@@ -85,11 +85,18 @@ function App() {
           )}
 
           {!isLoading && !error && comments.length > 0 && (
-            <div className="sticky-wall">
-              {comments.map((comment, index) => (
-                <StickyNote key={comment.id} comment={comment} index={index} />
-              ))}
-            </div>
+            <>
+              <h1 className="wall-title">Wall of Gratitude</h1>
+              <div className="sticky-wall">
+                {comments.map((comment, index) => (
+                  <StickyNote
+                    key={comment.id}
+                    comment={comment}
+                    index={index}
+                  />
+                ))}
+              </div>
+            </>
           )}
         </main>
       )}
